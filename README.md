@@ -1,6 +1,16 @@
 # Fe-ed
 
-Fe-ed is an experimental tool which uses A.I. to formulate connections between bookmarked web pages. It consists of two parts: a bookmarking tool, which sends saved pages to Fe-ed, and a microsite for viewing your connected bookmarks in an explorable 3D graph. Fe-ed will also intermediately suggest new sites that might interest you, and adds them to the graph (indicated by lighter grey nodes).
+
+
+https://github.com/468/fe-ed/assets/8698057/f371344b-1b68-4cb2-922f-1851823cf7f4
+
+
+
+Fe-ed is an experimental tool which uses ChatGPT-3.5 to formulate unexpected connections between bookmarked web pages by analysing their contents. It consists of two parts: a bookmarking tool, which sends saved pages to Fe-ed, and a microsite for viewing your connected bookmarks in an explorable 3D graph. Fe-ed will also intermediately suggest new sites that might interest you, and adds them to the graph (indicated by lighter grey nodes).
+
+![screenshot2](https://github.com/468/fe-ed/assets/8698057/adeaa5f2-6c2f-4ff9-b5f3-b943f09a8e55)
+
+Screenshot from Chrome add-on. Clicking 'digest' adds the website being viewed to the Fe-ed graph for processing.
 
 Fe-ed is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
