@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Fe-ed",
+    "description": "This extension sends the content of the page you are currently viewing to your Fe-ed.",
+    "version": "1.0",
+    "action": {
+      "default_title": "Fe-ed", 
+      "default_popup": "popup.html"
+    },
+    "host_permissions": ["*://*/*"],
+    "permissions": [
+      "activeTab",
+      "cookies",
+      "scripting"
+    ]
+}

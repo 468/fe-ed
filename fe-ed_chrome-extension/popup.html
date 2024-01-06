@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FE-ED</title>
+    <style>
+      body {
+        width: 200px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        background-color: #222;
+      }
+
+      #sendButton {
+        background-color: white;
+        color: #111;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+        display: none;
+      }
+
+      #message {
+        display: none;
+        color: #fff;
+      }
+
+      #loggedIn {
+        display: none;
+      }
+
+      a {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading">Loading...</div>
+    <div id="message"><a href="https://www.fe-ed.world" target="_blank">Log in</a> to use this extension and view your Fe-ed.</div>
+    <button id="sendButton">Digest</button>
+    <div id="loggedIn"><a href="https://www.fe-ed.world" target="_blank">View Fe-ed</a></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
+
