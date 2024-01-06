@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Node {
+  id           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at   DateTime?            @default(now()) @db.Timestamptz(6)
+  url          String?
+  status       NodeProcessingStatus @default(NOT_STARTED)
+  worldId      String?              @db.Uuid
+  title        String?              @default("Untitled")
+  isSuggestion Boolean?             @default(false)
+  World        World?               @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  tags         Tag[]
+}
+
+model Tag {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  name       String?
+  nodeId     String?   @db.Uuid
+  Node       Node?     @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+}
+
+model World {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  title      String?   @default("Untitled")
+  userId     String?   @db.Uuid
+  nodes      Node[]
+}
+
+enum NodeProcessingStatus {
+  NOT_STARTED
+  STARTED
+  PROCESSED
+  FAILED
+}
