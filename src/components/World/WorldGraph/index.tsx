@@ -16,8 +16,8 @@ function WorldGraph({ nodesAndLinks }: NodeGraphProps): JSX.Element {
   useEffect(() => {
     // @ts-ignore
     const bloomPass = new UnrealBloomPass(1, 0.5, 0.5, 512);
-    bloomPass.strength = 2;
-    bloomPass.radius = 1;
+    bloomPass.strength = 0.33;
+    bloomPass.radius = 0.33;
     bloomPass.threshold = 0.1;
     if (!fgRef.current) return;
     // @ts-ignore
@@ -37,12 +37,13 @@ function WorldGraph({ nodesAndLinks }: NodeGraphProps): JSX.Element {
       ref={fgRef}
       controlType={"orbit"}
       nodeColor={(node: any) => {
-        return node.isSuggestion ? "#333333" : "#ffffff";
+        return node.isSuggestion ? "#555555" : "#ffffff";
       }}
       graphData={nodesAndLinks}
       nodeLabel="nodeLabel"
       linkWidth={1.5}
       nodeRelSize={6}
+      backgroundColor="#000000"
       onNodeClick={(node, event: MouseEvent) => openLink(node as NodeData)}
     />
   );
