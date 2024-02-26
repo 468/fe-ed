@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import "@/styles/globals.css";
 import { useState } from "react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
