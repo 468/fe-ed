@@ -18,7 +18,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ROLE_KEY;
 const supabase = createClient(supabaseUrl as string, supabaseKey as string);
 
-async function uploadImageToSupabase(buffer, fileName) {
+async function uploadImageToSupabase(buffer: any, fileName: string) {
   const filePath = `uploads/${fileName}`; // Adjust path as needed
   const { data, error } = await supabase.storage
     .from("fe-ed_images")
@@ -40,7 +40,7 @@ async function uploadImageToSupabase(buffer, fileName) {
   return imageUploadedPath.data.publicUrl;
 }
 
-const handler = async (req, res) => {
+const handler = async (req: any, res: any) => {
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
@@ -69,17 +69,13 @@ const handler = async (req, res) => {
         .json({ error: "Unauthenticated or invalid token" });
     }
 
-    console.log("d");
-    const data = await new Promise((resolve, reject) => {
+    const data = (await new Promise((resolve, reject) => {
       const form = new formidable.IncomingForm();
-      form.parse(req, (err, fields, files) => {
+      form.parse(req, (err: any, fields: any, files: any) => {
         if (err) reject(err);
         resolve({ fields, files });
       });
-    });
-
-    console.log("data below");
-    console.log(data);
+    })) as any;
 
     if (!data.files || !data.files.image) {
       return res.status(400).json({ error: "No image uploaded" });
@@ -130,10 +126,8 @@ const handler = async (req, res) => {
     // Extract tags and url
     const tags = parsedResponse.tags;
 
-    console.log(tags);
-
     const world = await prisma.world.findFirst({
-      where: { userId: user.id },
+      where: { userId: user.user?.id },
     });
 
     if (!world) {
@@ -153,7 +147,7 @@ const handler = async (req, res) => {
         nodeType: NodeType.IMAGE,
         worldId: world.id,
         tags: {
-          create: tags.map((name) => ({
+          create: tags.map((name: string) => ({
             name: name.trim().toLowerCase(),
           })),
         },

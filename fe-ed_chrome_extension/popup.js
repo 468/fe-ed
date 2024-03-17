@@ -63,7 +63,7 @@ document.getElementById('sendButton').onclick = function() {
 
 document.getElementById('textSubmitButton').onclick = function() {
     const text = document.getElementById('textInput').value;
-    fetch(`${NEPHILA_URL}/api/external-submit-text`, {
+    fetch(`${NEPHILA_URL}/api/external-text-submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

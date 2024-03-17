@@ -61,10 +61,10 @@ function WorldGraph({ nodesAndLinks }: NodeGraphProps): JSX.Element {
   }, []);
 
   const openLink = (node: NodeData) => {
+    if (!node.url) return;
     window.open(node.url, "_blank");
   };
 
-  console.log(hoveredNode);
   return (
     <>
       {hoveredNode && hoveredNode.url && <ImagePreview url={hoveredNode.url} />}
