@@ -1,3 +1,5 @@
+import { NodeType } from "@prisma/client";
+
 export interface NodeData {
   id: string;
   nodeLabel: string;
@@ -6,6 +8,7 @@ export interface NodeData {
   title: string;
   tags: Tag[];
   url: string;
+  nodeType: NodeType;
 }
 
 export interface LinkData {

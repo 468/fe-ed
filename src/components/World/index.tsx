@@ -39,6 +39,7 @@ const World = (): JSX.Element => {
           id: node.id.toString(),
           nodeLabel: node.title,
           color: "#fff",
+          nodeType: node.nodeType,
           index: node.id,
         }));
 

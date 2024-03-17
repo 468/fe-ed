@@ -41,26 +41,21 @@ async function uploadImageToSupabase(buffer, fileName) {
 }
 
 const handler = async (req, res) => {
-  console.log("a");
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
-
-  console.log("b");
 
   try {
     const token = req.headers.authorization.split(" ")[1];
 
     // Check for required parameters in request.
 
-    console.log("a");
     if (!token) {
       return res
         .status(400)
         .json({ error: "URL and Authorization token are required" });
     }
 
-    console.log("b");
     // Decode and parse JWT token.
     let decodedJWT = decodeURIComponent(token);
     let parsedJWT = JSON.parse(decodedJWT)[0];
@@ -68,9 +63,6 @@ const handler = async (req, res) => {
     // Verify the token and get the user.
     const { data: user, error } = await supabase.auth.getUser(parsedJWT);
 
-    console.log("here");
-    console.log(error);
-    console.log(user);
     if (error || !user) {
       return res
         .status(401)
