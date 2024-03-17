@@ -25,9 +25,11 @@
     "clsx": "^1.2.1",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.2",
+    "formidable": "^3.5.1",
     "immer": "^9.0.19",
     "lodash": "^4.17.21",
     "magic-sdk": "^17.1.4",
+    "mime-types": "^2.1.35",
     "multi-range-slider-react": "^2.0.2",
     "next": "13.1.2",
     "next-auth": "^4.22.1",
@@ -50,6 +52,7 @@
     "zustand": "^4.3.5"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
     "@types/three": "^0.149.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",

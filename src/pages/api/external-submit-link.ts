@@ -38,21 +38,6 @@ const getSummary = async (strippedText: string) => {
   }
 };
 
-/*
-const fetchScrapingBee = async (url) => {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1?api_key=${apiKey}&url=${encodeURIComponent(
-    url
-  )}&wait=1000&block_ads=true&render_js=true`;
-
-  const response = await axios.get(scrapingBeeUrl);
-  const title = response.data.match(/<title>(.*?)<\/title>/)[1];
-  const strippedText = stripTags(response.data);
-
-  return { title, strippedText };
-};
-*/
-
 const processScrapedData = async (input: string) => {
   const apiKey = process.env.OPENAI_API_KEY;
   const apiUrl = "https://api.openai.com/v1/chat/completions";
@@ -109,12 +94,15 @@ export default async function handler(req: any, res: any) {
     const { url, title, html } = req.body;
 
     // Check for required parameters in request.
+
+    console.log("a");
     if (!url || !token) {
       return res
         .status(400)
         .json({ error: "URL and Authorization token are required" });
     }
 
+    console.log("b");
     // Decode and parse JWT token.
     let decodedJWT = decodeURIComponent(token);
     let parsedJWT = JSON.parse(decodedJWT)[0];

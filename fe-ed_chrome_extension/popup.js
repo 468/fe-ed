@@ -1,9 +1,9 @@
 let supabaseToken = '';
 
-// const NEPHILA_URL = "http://localhost:3000"
-const NEPHILA_URL = "https://www.fe-ed.world"
-// const COOKIE_DOMAIN = 'localhost'
-const COOKIE_DOMAIN = 'fe-ed.world'
+const NEPHILA_URL = "http://localhost:3000"
+// const NEPHILA_URL = "https://www.fe-ed.world"
+const COOKIE_DOMAIN = 'localhost'
+// const COOKIE_DOMAIN = 'fe-ed.world'
 
 document.getElementById('loading').style.display = 'block';
 
@@ -60,3 +60,45 @@ document.getElementById('sendButton').onclick = function() {
     });
   });
 };
+
+document.getElementById('textSubmitButton').onclick = function() {
+    const text = document.getElementById('textInput').value;
+    fetch(`${NEPHILA_URL}/api/external-submit-text`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseToken}`
+      },
+      body: JSON.stringify({ text: text }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Text submission response:', data);
+      window.close();
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };
+  
+  document.getElementById('imageSubmitButton').onclick = function() {
+    const imageInput = document.getElementById('imageInput');
+    const formData = new FormData();
+    formData.append('image', imageInput.files[0]);
+  
+    fetch(`${NEPHILA_URL}/api/external-submit-image`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${supabaseToken}`
+      },
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Image submission response:', data);
+      window.close();
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };

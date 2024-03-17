@@ -41,12 +41,28 @@
       a {
         color: #fff;
       }
+
+      #textInput, #imageInput {
+            width: 100%;
+            margin-bottom: 10px;
+        }
     </style>
   </head>
   <body>
     <div id="loading">Loading...</div>
     <div id="message"><a href="https://www.fe-ed.world" target="_blank">Log in</a> to use this extension and view your Fe-ed.</div>
-    <button id="sendButton">Digest</button>
+    <button id="sendButton">Digest Current Page</button>
+    <!-- Form for submitting text -->
+    <div id="textSubmission">
+        <textarea id="textInput" placeholder="Enter text here..."></textarea>
+        <button id="textSubmitButton">Submit Text</button>
+      </div>
+  
+      <!-- Form for uploading an image -->
+      <div id="imageSubmission">
+        <input type="file" id="imageInput" accept="image/*">
+        <button id="imageSubmitButton">Upload Image</button>
+      </div>
     <div id="loggedIn"><a href="https://www.fe-ed.world" target="_blank">View Fe-ed</a></div>
     <script src="popup.js"></script>
   </body>
