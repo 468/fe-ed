@@ -14,29 +14,30 @@ export const config = {
 };
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_ROLE_KEY;
 const supabase = createClient(supabaseUrl as string, supabaseKey as string);
 
 async function uploadImageToSupabase(buffer, fileName) {
-  const contentType = mime.lookup(fileName) || "application/octet-stream";
-  const filePath = `uploads/${fileName}`;
+  const filePath = `uploads/${fileName}`; // Adjust path as needed
   const { data, error } = await supabase.storage
     .from("fe-ed_images")
     .upload(filePath, buffer, {
-      contentType,
-      upsert: true,
+      cacheControl: "3600",
+      upsert: true, // Optional: Set to true if you want to overwrite existing files
     });
 
   if (error) {
-    throw new Error(
-      "Failed to upload image to Supabase Storage:",
-      error.message
-    );
+    console.error("Upload error details:", error);
+    throw new Error("Failed to upload image to Supabase Storage");
   }
 
-  return `${supabaseUrl.replace(".co", ".in")}/storage/v1/object/public/${
-    data.Key
-  }`;
+  console.log(data);
+  const imageUploadedPath = supabase.storage
+    .from("fe-ed_images")
+    .getPublicUrl(data.path);
+
+  return imageUploadedPath.data.publicUrl;
 }
 
 const handler = async (req, res) => {
@@ -166,6 +167,8 @@ const handler = async (req, res) => {
         },
       },
     });
+
+    console.log(newNode);
 
     res.status(200).json({ newNode });
   } catch (error) {

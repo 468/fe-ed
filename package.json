@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/formidable": "^3.4.5",
+    "@types/mime-types": "^2.1.4",
     "@types/three": "^0.149.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
