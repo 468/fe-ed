@@ -1,9 +1,9 @@
 let supabaseToken = '';
 
-const NEPHILA_URL = "http://localhost:3000"
-// const NEPHILA_URL = "https://www.fe-ed.world"
-const COOKIE_DOMAIN = 'localhost'
-// const COOKIE_DOMAIN = 'fe-ed.world'
+// const NEPHILA_URL = "http://localhost:3000"
+const NEPHILA_URL = "https://www.fe-ed.world"
+// const COOKIE_DOMAIN = 'localhost'
+const COOKIE_DOMAIN = 'fe-ed.world'
 
 document.getElementById('loading').style.display = 'block';
 
