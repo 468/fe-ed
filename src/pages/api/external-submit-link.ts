@@ -89,26 +89,19 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Begin main try block for the POST request.
   try {
     const token = req.headers.authorization.split(" ")[1];
     const { url, title, html } = req.body;
 
-    // Check for required parameters in request.
-
-    console.log("a");
     if (!url || !token) {
       return res
         .status(400)
         .json({ error: "URL and Authorization token are required" });
     }
 
-    console.log("b");
-    // Decode and parse JWT token.
     let decodedJWT = decodeURIComponent(token);
     let parsedJWT = JSON.parse(decodedJWT)[0];
 
-    // Verify the token and get the user.
     const { data: user, error } = await supabase.auth.getUser(parsedJWT);
 
     if (error || !user) {

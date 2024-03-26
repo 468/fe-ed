@@ -3,11 +3,17 @@ import WorldGraph from "./WorldGraph";
 import { NodeData, LinkData, Tag } from "../types";
 import CreateWorld from "../CreateWorld";
 import WorldLoading from "./WorldLoading";
+import UpdatePromptsForm from "./UpdatePromptsForm";
 
 const World = (): JSX.Element => {
   const [nodes, setNodes] = useState<NodeData[]>([]);
   const [links, setLinks] = useState<LinkData[]>([]);
   const [worlds, setWorlds] = useState<string[] | null>(null);
+  const [currentWorldPrompts, setCurrentWorldPrompts] = useState({
+    textPrompt: null,
+    linkPrompt: null,
+    imagePrompt: null,
+  });
   const [currentWorld, setCurrentWorld] = useState<string | null>(null);
 
   useEffect(() => {
@@ -18,6 +24,11 @@ const World = (): JSX.Element => {
         const worlds = await response.json();
         setWorlds(worlds);
         setCurrentWorld(worlds[0]?.id);
+        setCurrentWorldPrompts({
+          textPrompt: worlds[0]?.textPrompt,
+          linkPrompt: worlds[0]?.linkPrompt,
+          imagePrompt: worlds[0]?.imagePrompt,
+        });
       } else {
         console.error("Error fetching worlds:", await response.json());
       }
@@ -102,7 +113,15 @@ const World = (): JSX.Element => {
     return <CreateWorld onWorldCreate={onWorldCreate} />;
   }
 
-  return <WorldGraph nodesAndLinks={{ nodes, links }} />;
+  return (
+    <>
+      <UpdatePromptsForm
+        worldId={currentWorld}
+        initialPrompts={currentWorldPrompts}
+      />
+      <WorldGraph nodesAndLinks={{ nodes, links }} />
+    </>
+  );
 };
 
 export default World;
