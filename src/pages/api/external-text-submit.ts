@@ -7,7 +7,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl as string, supabaseKey as string);
 
-const processTextData = async (input: string) => {
+const processTextData = async (input: string, prompt: string | null) => {
   const apiKey = process.env.OPENAI_API_KEY;
   const apiUrl = "https://api.openai.com/v1/chat/completions";
   const headers = {
@@ -20,6 +20,7 @@ const processTextData = async (input: string) => {
       {
         role: "system",
         content:
+          prompt ||
           "You are 'NEPHILA MINI', an AI bot that ingests text that has been submitted by a user, and returns a list of between 1 and 10 keywords -- each keyword being a single verb, adjective, or noun -- that concisely summarises your feelings about the content. You are a very sophisticated and creative AI, that sometimes returns keywords that would be non-obvious to a human; your unique perspective is what makes you so powerful.",
       },
       {
@@ -69,16 +70,17 @@ export default async function handler(req: any, res: any) {
     console.log("got here");
     const { text } = req.body;
 
-    const tags = await processTextData(text);
-
     const world = await prisma.world.findFirst({
       where: { userId: user.user?.id },
+      select: { textPrompt: true, id: true },
     });
 
     console.log("got here");
     if (!world) {
       return res.status(500).json({ error: "No world found for user" });
     }
+
+    const tags = await processTextData(text, world.textPrompt);
 
     const newNode = await prisma.node.create({
       data: {

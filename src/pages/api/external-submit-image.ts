@@ -81,6 +81,18 @@ const handler = async (req: any, res: any) => {
       return res.status(400).json({ error: "No image uploaded" });
     }
 
+    const world = await prisma.world.findFirst({
+      where: { userId: user.user?.id },
+      select: {
+        id: true,
+        imagePrompt: true,
+      },
+    });
+
+    if (!world) {
+      return res.status(500).json({ error: "No world found for user" });
+    }
+
     const imageFile = data.files.image[0];
     console.log(imageFile);
     const image = fs.readFileSync(imageFile.filepath);
@@ -89,6 +101,9 @@ const handler = async (req: any, res: any) => {
     const imageBase64 = image.toString("base64");
     const contentType = mime.lookup(fileName) || "application/octet-stream";
 
+    const prompt =
+      world?.imagePrompt ||
+      `You are 'NEPHILA MINI', an AI bot that ingests an image, and returns a list of between 1 and 10 keywords -- each keyword being a single verb, adjective, or noun -- that concisely summarises your feelings about the content. You are a very sophisticated and creative AI, that sometimes returns keywords that would be non-obvious to a human; your unique perspective is what makes you so powerful. In your response, return ONLY the keywords, each seperated by a single comma (no whitespace). Please respond solely with the requested information in following format: {"tags": ["TAG", "TAG", "TAG"].`;
     const openAIResponse = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -99,7 +114,7 @@ const handler = async (req: any, res: any) => {
             content: [
               {
                 type: "text",
-                text: `You are 'NEPHILA MINI', an AI bot that ingests an image, and returns a list of between 1 and 10 keywords -- each keyword being a single verb, adjective, or noun -- that concisely summarises your feelings about the content. You are a very sophisticated and creative AI, that sometimes returns keywords that would be non-obvious to a human; your unique perspective is what makes you so powerful. In your response, return ONLY the keywords, each seperated by a single comma (no whitespace). Please respond solely with the requested information in following format: {"tags": ["TAG", "TAG", "TAG"].`,
+                text: prompt,
               },
               {
                 type: "image_url",
@@ -125,14 +140,6 @@ const handler = async (req: any, res: any) => {
 
     // Extract tags and url
     const tags = parsedResponse.tags;
-
-    const world = await prisma.world.findFirst({
-      where: { userId: user.user?.id },
-    });
-
-    if (!world) {
-      return res.status(500).json({ error: "No world found for user" });
-    }
 
     const buffer = Buffer.from(imageBase64, "base64");
     const imageFilePath = await uploadImageToSupabase(buffer, fileName);

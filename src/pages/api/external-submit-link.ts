@@ -38,7 +38,7 @@ const getSummary = async (strippedText: string) => {
   }
 };
 
-const processScrapedData = async (input: string) => {
+const processScrapedData = async (input: string, prompt: string | null) => {
   const apiKey = process.env.OPENAI_API_KEY;
   const apiUrl = "https://api.openai.com/v1/chat/completions";
   const headers = {
@@ -51,6 +51,7 @@ const processScrapedData = async (input: string) => {
       {
         role: "system",
         content:
+          prompt ||
           "You are 'NEPHILA MINI', an AI bot that ingests content that has been scraped from websites, and returns a list of between 1 and 10 keywords -- each keyword being a single verb, adjective, or noun -- that concisely summarises your feelings about the content. You are a very sophisticated and creative AI, that sometimes returns keywords that would be non-obvious to a human; your unique perspective is what makes you so powerful.",
       },
       {
@@ -119,10 +120,23 @@ export default async function handler(req: any, res: any) {
     const strippedText = stripTags(html);
     const { summary } = await getSummary(strippedText);
 
+    const world = await prisma.world.findFirst({
+      where: { userId: user.user?.id },
+      select: { linkPrompt: true, id: true },
+    });
+
+    // Make sure a world was found for the user.
+    if (!world) {
+      return res.status(500).json({ error: "No world found for user" });
+    }
+
     let processedData;
 
     try {
-      processedData = await processScrapedData(`${title} ${summary}`);
+      processedData = await processScrapedData(
+        `${title} ${summary}`,
+        world.linkPrompt
+      );
     } catch (error: any) {
       console.error(
         "There was an error processing the scraped data: ",
@@ -136,15 +150,6 @@ export default async function handler(req: any, res: any) {
     const keywordArray = processedData.tags;
     const suggestedUrl = processedData.url;
     const suggestedUrlTitle = processedData.title;
-
-    const world = await prisma.world.findFirst({
-      where: { userId: user.user?.id },
-    });
-
-    // Make sure a world was found for the user.
-    if (!world) {
-      return res.status(500).json({ error: "No world found for user" });
-    }
 
     // Try to create the new node.
     const newNode = await prisma.node.create({
