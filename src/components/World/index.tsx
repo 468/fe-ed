@@ -4,6 +4,7 @@ import { NodeData, LinkData, Tag } from "../types";
 import CreateWorld from "../CreateWorld";
 import WorldLoading from "./WorldLoading";
 import UpdatePromptsForm from "./UpdatePromptsForm";
+import { saveAs } from "file-saver";
 
 const World = (): JSX.Element => {
   const [nodes, setNodes] = useState<NodeData[]>([]);
@@ -113,6 +114,31 @@ const World = (): JSX.Element => {
     return <CreateWorld onWorldCreate={onWorldCreate} />;
   }
 
+  const fetchAndDownloadTags = async () => {
+    if (!currentWorld) {
+      console.error("No world selected");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/api/get-tags-for-world?worldId=${currentWorld}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch tags");
+      }
+
+      const tags = await response.json();
+      const blob = new Blob([JSON.stringify(tags, null, 2)], {
+        type: "application/json",
+      });
+      saveAs(blob, `tags-world-${currentWorld}.json`);
+    } catch (error) {
+      console.error("Error fetching tags:", error);
+    }
+  };
+
   return (
     <>
       <UpdatePromptsForm
@@ -120,6 +146,12 @@ const World = (): JSX.Element => {
         initialPrompts={currentWorldPrompts}
       />
       <WorldGraph nodesAndLinks={{ nodes, links }} />
+      <button
+        onClick={fetchAndDownloadTags}
+        className="fixed top-0 left-0 mx-4 mt-4 text-xs mb-4 ml-4 bg-black hover:bg-grey text-white font-bold py-2 px-4 rounded"
+      >
+        Download Tags
+      </button>
     </>
   );
 };

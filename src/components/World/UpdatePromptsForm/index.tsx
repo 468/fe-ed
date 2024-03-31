@@ -76,7 +76,7 @@ const UpdatePromptsForm = ({
     <div className="my-4 mx-4 absolute bottom-0 left-0 z-[1000]">
       <button
         onClick={() => setIsFormVisible(!isFormVisible)}
-        className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        className="bg-black text-xs hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
       >
         {isFormVisible ? "Hide Prompts" : "Edit Prompts"}
       </button>
