@@ -17,6 +17,17 @@ const World = (): JSX.Element => {
   });
   const [currentWorld, setCurrentWorld] = useState<string | null>(null);
 
+  const handleCopyWorldId = async () => {
+    if (currentWorld) {
+      try {
+        await navigator.clipboard.writeText(currentWorld);
+        alert("World ID copied to clipboard!"); // Optionally, show a confirmation message
+      } catch (error) {
+        console.error("Error copying world ID:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchWorlds = async () => {
       const response = await fetch("/api/get-worlds");
@@ -151,6 +162,12 @@ const World = (): JSX.Element => {
         className="fixed top-0 left-0 mx-4 mt-4 text-xs mb-4 ml-4 bg-black hover:bg-grey text-white font-bold py-2 px-4 rounded"
       >
         Download Tags
+      </button>
+      <button
+        onClick={handleCopyWorldId}
+        className="fixed top-0 right-0 mt-4 mr-4 bg-black hover:bg-grey text-xs text-white font-bold py-2 px-4 rounded"
+      >
+        Copy World ID
       </button>
     </>
   );
