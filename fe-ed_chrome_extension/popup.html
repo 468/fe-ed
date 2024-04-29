@@ -1,70 +1,120 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>FE-ED</title>
     <style>
-      body {
-        width: 200px;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        background-color: #222;
-      }
+                body {
+                width: 370px;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                background: url('bg1.png') center / 100% auto; /* Background image fit to width */
+  
+                color: #fff;
+                margin: 0;
+            }
+        button {
+            background: linear-gradient(to right, #99d3f9, #fed07a);
+            color: #fff;
+            border: none;
+            padding: 8px 10px;
+            width: 300px; /* Set button width to 200px */
+            text-align: center;
+            text-decoration: none;
+            display: block; /* Make buttons block level for easier centering */
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            border: 1px solid black;
+            margin-top: 10px;
+        }
 
-      #sendButton {
-        background-color: white;
-        color: #111;
-        border: none;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 12px;
-        display: none;
-      }
+        #sendButton {
+            display: none;
+        }
 
-      #message {
-        display: none;
-        color: #fff;
-      }
+        #message, #loggedIn {
+            display: none;
+        }
 
-      #loggedIn {
-        display: none;
-      }
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
 
-      a {
-        color: #fff;
-      }
+        #textInput {
+            width: 300px; /* Set input width to 200px */
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            margin: 5px auto; /* Center text input horizontally */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+        }
 
-      #textInput, #imageInput {
-            width: 100%;
-            margin-bottom: 10px;
+        #textInput {
+            height: 50px;
+            resize: none;
+        }
+
+        /* Hide the default file input and replace it with a styled button */
+        #imageInput {
+            display: none; /* Hide the file input */
+            margin-bottom:
+        }
+
+        .file-upload-wrapper {
+            width: 350px;
+            margin: 10px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .file-upload-button {
+            display: block;
+            width: 100px;
+            padding: 4px 10px;
+            text-align: center;
+            background:white;
+            color: #000;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Adjust link style */
+        #message a, #loggedIn a {
+            padding: 10px 20px;
+            display: block;
+            margin: 10px 0;
+            border-radius: 12px;
+            background: transparent;
+            text-align: center;
+            font-size: 1.5em;
+            color: #000;
+            text-decoration: underline;
         }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div id="loading">Loading...</div>
     <div id="message"><a href="https://www.fe-ed.world" target="_blank">Log in</a> to use this extension and view your Fe-ed.</div>
     <button id="sendButton">Digest Current Page</button>
+        <!-- Form for uploading an image -->
+        <div class="file-upload-wrapper">
+            <input type="file" id="imageInput" accept="image/*">
+            <label for="imageInput" class="file-upload-button">Choose File</label> <!-- Styled label to replace the file input -->
+            <button id="imageSubmitButton">Digest Image</button>
+        </div>
     <!-- Form for submitting text -->
     <div id="textSubmission">
         <textarea id="textInput" placeholder="Enter text here..."></textarea>
-        <button id="textSubmitButton">Submit Text</button>
-      </div>
-  
-      <!-- Form for uploading an image -->
-      <div id="imageSubmission">
-        <input type="file" id="imageInput" accept="image/*">
-        <button id="imageSubmitButton">Upload Image</button>
-      </div>
+        <button id="textSubmitButton">Digest Text</button>
+    </div>
     <div id="loggedIn"><a href="https://www.fe-ed.world" target="_blank">View Fe-ed</a></div>
     <script src="popup.js"></script>
-  </body>
+</body>
 </html>
-
